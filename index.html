@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FY26 CCE Strategy Dashboard - IG Group</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: #E3252C;
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            letter-spacing: -2px;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-item {
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .nav-item.active {
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 40px;
+        }
+
+        /* Section Styles */
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Overview Hero */
+        .hero {
+            background: linear-gradient(135deg, #E3252C 0%, #c91f25 100%);
+            color: white;
+            padding: 60px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 60%;
+            height: 200%;
+            background: rgba(255,255,255,0.05);
+            transform: rotate(35deg);
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+            line-height: 1.8;
+        }
+
+        /* Strategy Cards Grid */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .strategy-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+
+        .strategy-card h3 {
+            color: #E3252C;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .strategy-card .metric {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .strategy-card .description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Department Section Styles */
+        .department-header {
+            background-color: #E3252C;
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .department-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        .department-info h2 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .tab:hover {
+            color: #E3252C;
+        }
+
+        .tab.active {
+            color: #E3252C;
+            border-bottom-color: #E3252C;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        .kpi-card .kpi-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #E3252C;
+            margin-bottom: 5px;
+        }
+
+        .kpi-card .kpi-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Content Lists */
+        .content-list {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .content-list h4 {
+            color: #E3252C;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .list-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item:hover {
+            padding-left: 10px;
+            color: #E3252C;
+        }
+
+        .list-item::before {
+            content: '•';
+            color: #E3252C;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 20px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+            margin: 40px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 100%;
+            background: #E3252C;
+            opacity: 0.3;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            width: 45%;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            background: #E3252C;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .timeline-content h4 {
+            color: #E3252C;
+            margin-bottom: 10px;
+        }
+
+        /* Progress Bars */
+        .progress-container {
+            margin: 20px 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            background: #eee;
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #E3252C 0%, #ff4d52 100%);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Audience Split Visualization */
+        .audience-split {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0;
+        }
+
+        .audience-segment {
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .audience-segment:hover {
+            transform: scale(1.05);
+        }
+
+        .segment-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            margin: 0 auto 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .segment-circle::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(45deg);
+        }
+
+        .ig-markets { background: linear-gradient(135deg, #E3252C 0%, #c91f25 100%); }
+        .ig-one { background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%); }
+        .market-specific { background: linear-gradient(135deg, #ff9999 0%, #ff7777 100%); }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+            margin-top: 60px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 40px 20px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .department-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                flex-direction: column;
+            }
+
+            .timeline-content {
+                width: 90%;
+            }
+
+            .audience-split {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div>
+                <div class="logo">IG</div>
+                <div class="header-subtitle">FY26 Content & Customer Engagement Strategy</div>
+            </div>
+            <nav class="nav">
+                <div class="nav-item active" onclick="showSection('overview')">Overview</div>
+                <div class="nav-item" onclick="showSection('divisional')">Divisional Strategy</div>
+                <div class="nav-item" onclick="showSection('crm')">CRM</div>
+                <div class="nav-item" onclick="showSection('seo')">SEO</div>
+                <div class="nav-item" onclick="showSection('aso')">ASO</div>
+                <div class="nav-item" onclick="showSection('social')">Social Media</div>
+                <div class="nav-item" onclick="showSection('education')">Education</div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="hero">
+                <h1>Content & Customer Engagement</h1>
+                <p>The divisional strategy aims to create an integrated content ecosystem that supports business growth objectives to double the active customer base by FY27 through coordinated efforts across all digital touchpoints.</p>
+            </div>
+
+            <h2 style="margin: 40px 0 20px; color: #E3252C;">Strategic Framework</h2>
+            <div class="content-list">
+                <p style="margin-bottom: 20px;">The strategy drives an ambitious 8% revenue CAGR by establishing a balanced approach that supports dual-brand architecture with differentiated positioning across markets. While maintaining consistency, it enables market-specific evergreen execution that addresses unique regional priorities throughout the customer lifecycle - from acquisition to value improvements.</p>
+            </div>
+
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <h3>Revenue Target</h3>
+                    <div class="metric">8%</div>
+                    <div class="description">CAGR by establishing a balanced approach supporting dual-brand architecture</div>
+                </div>
+                <div class="strategy-card">
+                    <h3>Customer Base Goal</h3>
+                    <div class="metric">2X</div>
+                    <div class="description">Double active customer base by FY27 through integrated content ecosystem</div>
+                </div>
+                <div class="strategy-card">
+                    <h3>Market Focus</h3>
+                    <div class="metric">Dual-Brand</div>
+                    <div class="description">IG Markets for experienced traders, IG One for developing investors</div>
+                </div>
+            </div>
+
+            <h2 style="margin: 40px 0 20px; color: #E3252C;">Key Objectives</h2>
+            <div class="content-list">
+                <div class="list-item">Double the active customer base by FY27 through an integrated content ecosystem across all digital touchpoints</div>
+                <div class="list-item">Drive awareness and adoption of new offerings (crypto, stock trading, OTC options) through coordinated content journeys</div>
+                <div class="list-item">Position IG as an innovative leader in financial technology through consistent thought leadership</div>
+                <div class="list-item">Establish clear brand differentiation between IG Markets and IG One while maintaining overall brand identity</div>
+                <div class="list-item">Deliver sustainable revenue by optimising the complete customer journey from discovery to long-term engagement</div>
+                <div class="list-item">Support unified brand positioning across all content channels with locally relevant messaging</div>
+            </div>
+
+            <h2 style="margin: 40px 0 20px; color: #E3252C;">Audience Strategy</h2>
+            <p style="text-align: center; margin-bottom: 20px; color: #666;">The audience segmentation reflects the dual-brand approach:</p>
+            <div class="audience-split">
+                <div class="audience-segment">
+                    <div class="segment-circle ig-markets">20%</div>
+                    <h4>IG Markets</h4>
+                    <p style="color: #666;">Targets high-value experienced traders who generate revenue through higher trading frequency and position sizes</p>
+                </div>
+                <div class="audience-segment">
+                    <div class="segment-circle ig-one">70%</div>
+                    <h4>IG One</h4>
+                    <p style="color: #666;">Targets a broader audience of developing investors seeking accessible market entry</p>
+                </div>
+                <div class="audience-segment">
+                    <div class="segment-circle market-specific">10%</div>
+                    <h4>Market-Specific</h4>
+                    <p style="color: #666;">Addresses unique regional characteristics</p>
+                </div>
+            </div>
+
+            <h2 style="margin: 40px 0 20px; color: #E3252C;">Channel Strategy</h2>
+            <div class="content-list">
+                <div class="list-item"><strong>IG Markets:</strong> Precision targeting through specialised content, webinars, LinkedIn, and strategic partnerships</div>
+                <div class="list-item"><strong>IG One:</strong> Broader reach through social media, educational content, podcasts, and influencer partnerships</div>
+                <div class="list-item"><strong>Market-specific</strong> optimisations that reflect regional dynamics and product launch timelines</div>
+            </div>
+
+            <h2 style="margin: 40px 0 20px; color: #E3252C;">Content Framework</h2>
+            <p style="margin-bottom: 20px; color: #666;">Four content pillars form the foundation for all communications:</p>
+            <div class="strategy-grid">
+                <div class="content-list">
+                    <h4>Education & Enablement</h4>
+                    <p>Market-specific educational content tailored to different experience levels</p>
+                </div>
+                <div class="content-list">
+                    <h4>Product Awareness</h4>
+                    <p>Communications highlighting competitive advantages and unique market propositions</p>
+                </div>
+                <div class="content-list">
+                    <h4>Community Building</h4>
+                    <p>Creating advocacy networks that enhance acquisition efficiency</p>
+                </div>
+                <div class="content-list">
+                    <h4>Market Intelligence</h4>
+                    <p>Positioning IG as a trusted authority by delivering valuable insights</p>
+                </div>
+            </div>
+
+            <h2 style="margin: 40px 0 20px; color: #E3252C;">Implementation Roadmap</h2>
+            <p style="text-align: center; margin-bottom: 20px; color: #666;">The content development roadmap aligns with the division's product launch timeline in three phases:</p>
+            <div class="timeline">
+                <div class="timeline-line"></div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4>Foundation Phase (Q1 FY26)</h4>
+                        <p>Establishing fundamental content frameworks while completing Singapore IG One Stock Trading launch</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4>Expansion Phase (Q2-Q3 FY26)</h4>
+                        <p>Accelerating content development to support multiple market initiatives including crypto trading rollout</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4>Innovation Phase (Q4 FY26-Q1 FY27)</h4>
+                        <p>Extending beyond immediate product launches to support adjacent opportunities and future growth</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            </div>
+
+            <h2 style="margin: 40px 0 20px; color: #E3252C;">Measurement Framework</h2>
+            <div class="content-list">
+                <div class="list-item"><strong>CRM metrics:</strong> Improving conversion rates, welcome journey effectiveness, retention, and trading frequency</div>
+                <div class="list-item"><strong>SEO performance:</strong> Increasing traffic-to-app conversion, establishing topical authority, and keyword positioning</div>
+                <div class="list-item"><strong>App Store Optimisation:</strong> Advancing keyword rankings and improving impression-to-download rates</div>
+                <div class="list-item"><strong>Social media engagement:</strong> Optimising engagement rates, content performance, and community growth</div>
+                <div class="list-item"><strong>Educational impact:</strong> Accelerating first trades, improving user retention, and driving cross-product exploration</div>
+            </div>
+        </section>
+
+        <!-- Divisional Strategy Section -->
+        <section id="divisional" class="section">
+            <div class="hero" style="background: linear-gradient(135deg, #333 0%, #555 100%);">
+                <h1>Divisional Strategy Summary</h1>
+                <p>A comprehensive view of objectives, priorities, actions, and considerations across all CCE departments</p>
+            </div>
+
+            <!-- CCE Objectives, Priorities and KPIs -->
+            <h2 style="margin: 40px 0 20px; color: #E3252C;">CCE Department Overview</h2>
+            <div class="strategy-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 40px;">
+                <div class="content-list">
+                    <h4 style="background: #333; color: white; padding: 15px; margin: -30px -30px 20px; border-radius: 10px 10px 0 0;">CCE OBJECTIVES</h4>
+                    <div class="list-item">Double the active customer base by FY27 through an integrated content ecosystem across all digital touchpoints</div>
+                    <div class="list-item">Drive awareness and adoption of new offerings (crypto, stock trading, OTC options) through coordinated content journeys</div>
+                    <div class="list-item">Position IG as an innovative leader in financial technology through consistent thought leadership</div>
+                    <div class="list-item">Establish clear brand differentiation between IG Markets and IG One while maintaining overall brand identity</div>
+                    <div class="list-item">Deliver sustainable revenue by optimising the complete customer journey from discovery to long-term engagement</div>
+                    <div class="list-item">Support unified brand positioning across all content channels with locally relevant messaging</div>
+                </div>
+
+                <div class="content-list">
+                    <h4 style="background: #333; color: white; padding: 15px; margin: -30px -30px 20px; border-radius: 10px 10px 0 0;">CCE PRIORITIES</h4>
+                    <div class="list-item"><strong>Addressable Audience Expansion:</strong> Reach beyond traditional CFD trader base to engage developing investors, with 70% of resources dedicated to this growth-driving segment</div>
+                    <div class="list-item"><strong>New Product Adoption:</strong> Accelerate uptake of new offerings through progressive knowledge development</div>
+                    <div class="list-item"><strong>Cross-Platform Integration:</strong> Create pathways highlighting complementary benefits across IG Markets and IG One</div>
+                    <div class="list-item"><strong>Retention Enhancement:</strong> Systematically reduce attrition through relevance, value delivery, and continuous education</div>
+                    <div class="list-item"><strong>Market-Specific Focus:</strong> Address unique requirements across Japan (IG Arena, OTC Options), Singapore (Interest on Assets), Australia (stock trading, crypto), and UAE (zero-commission trading)</div>
+                </div>
+
+                <div class="content-list">
+                    <h4 style="background: #333; color: white; padding: 15px; margin: -30px -30px 20px; border-radius: 10px 10px 0 0;">CCE KPI's</h4>
+                    <div class="list-item">As listed per department below</div>
+                </div>
+            </div>
+
+            <!-- Marketing Strategy, Key Actions and Dependencies -->
+            <h2 style="margin: 40px 0 20px; color: #E3252C;">Strategic Implementation</h2>
+            <div class="strategy-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 40px;">
+                <div class="content-list">
+                    <h4 style="background: #333; color: white; padding: 15px; margin: -30px -30px 20px; border-radius: 10px 10px 0 0;">MARKETING STRATEGY</h4>
+                    <div class="list-item"><strong>The dual-brand architecture</strong> allocates content focus primarily to IG One's accessible guidance for developing investors (70%), with secondary emphasis on IG Markets' sophisticated tools for experienced traders (20%) and minimal attention to cross-platform thought leadership innovation (10%).</div>
+                    <div class="list-item"><strong>Integrated Channel Approach:</strong> IG Markets targets precisely through LinkedIn, newsletters, webinars, and partnerships; IG One reaches broadly via social media, push notifications, educational content, and influencers</div>
+                    <div class="list-item"><strong>Four Content Pillars:</strong> Education & Enablement through market-specific content for various experience levels; Product Awareness highlighting competitive advantages; Community Building via success stories and regional influencers; and Market Intelligence delivering actionable investment insights.</div>
+                </div>
+
+                <div class="content-list">
+                    <h4 style="background: #333; color: white; padding: 15px; margin: -30px -30px 20px; border-radius: 10px 10px 0 0;">KEY ACTIONS</h4>
+                    <div class="list-item"><strong>Implement phased content roadmap:</strong> Foundation Phase (Q1 FY26) establishes frameworks and launches Singapore IG One Stock Trading; Expansion Phase (Q2-Q3 FY26) accelerates content for crypto trading rollout; Innovation Phase (Q4 FY26-Q1 FY27) extends to adjacent opportunities.</div>
+                    <div class="list-item"><strong>Customer journey optimisation</strong> through lifecycle-driven CRM segmentation, strategic SEO keyword architecture, localised ASO metadata and visuals, platform-specific value-focused social media content, and dual-platform multi-format educational ecosystem.</div>
+                    <div class="list-item"><strong>Develop market-specific initiatives:</strong> Japan (IG Arena activation, high-value client engagement); Singapore (investing concepts education, first-trade conversion); Australia (stock trading advantages, crypto preparation); UAE (zero-commission trading for diverse audiences).</div>
+                </div>
+
+                <div class="content-list">
+                    <h4 style="background: #333; color: white; padding: 15px; margin: -30px -30px 20px; border-radius: 10px 10px 0 0;">DEPENDENCIES AND RISKS</h4>
+                    <div class="list-item"><strong>Integration of multiple data sources</strong> across markets may require substantial technical infrastructure upgrades</div>
+                    <div class="list-item"><strong>Success depends on mature behavioural analytics</strong> capabilities for personalisation initiatives</div>
+                    <div class="list-item"><strong>Content quality and consistency requirements</strong> across multiple platforms and markets</div>
+                    <div class="list-item"><strong>Technical excellence needed</strong> for mobile experience optimisation and structured data implementation</div>
+                    <div class="list-item"><strong>Coordination required</strong> between regional teams for market-specific adaptations</div>
+                    <div class="list-item"><strong>Resource allocation</strong> across multiple channels may create potential bandwidth limitations</div>
+                    <div class="list-item"><strong>Measurement frameworks needed</strong> to track advanced metrics beyond traditional engagement indicators</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CRM Section -->
+        <section id="crm" class="section">
+            <div class="department-header">
+                <div class="department-icon">📊</div>
+                <div class="department-info">
+                    <h2>CRM</h2>
+                    <p>This CRM strategy is designed to drive growth through personalised communication, segmentation, and data-driven optimisation - enhancing client value across all markets.</p>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('crm', 'objectives')">Objectives</div>
+                <div class="tab" onclick="showTab('crm', 'metrics')">Performance Metrics</div>
+                <div class="tab" onclick="showTab('crm', 'strategy')">Strategy</div>
+            </div>
+
+            <div id="crm-objectives" class="tab-content active">
+                <div class="content-list">
+                    <h4>Key Objectives</h4>
+                    <div class="list-item">Drive platform engagement and retention across both brands</div>
+                    <div class="list-item">Support cross-selling between products</div>
+                    <div class="list-item">Enable personalised communication driven by trading behaviour</div>
+                    <div class="list-item">Optimise journeys to drive multi-product acquisition</div>
+                    <div class="list-item">Improve integration of educational content for different user segments</div>
+                    <div class="list-item">Support 13% YoY growth in active monthly clients</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Strategic Goals</h4>
+                    <div class="list-item">Achieve sustainable business growth by increasing customer lifetime value through enhanced platform engagement, effective cross-selling, and supporting 13% YoY growth in active monthly clients</div>
+                    <div class="list-item">Establish personalisation capabilities through data-driven communication systems that respond to individual trading behaviours across both brands</div>
+                    <div class="list-item">Create an integrated, multi-product ecosystem where customers seamlessly engage with complementary offerings through optimised journeys and targeted educational content</div>
+                </div>
+            </div>
+
+            <div id="crm-metrics" class="tab-content">
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-value">8%</div>
+                        <div class="kpi-label">Conversion Rate Increase</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">10%</div>
+                        <div class="kpi-label">Welcome Journey Completion</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">60%</div>
+                        <div class="kpi-label">3-Month Retention Target</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">8-10%</div>
+                        <div class="kpi-label">Active Trading Days Increase</div>
+                    </div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Australia CFD Retention Improvement</span>
+                        <span>53.5% → 60%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Performance Metrics</h4>
+                    <div class="list-item"><strong>Conversion Rate:</strong> Increase lead-to-first-trade conversion by 8%</div>
+                    <div class="list-item"><strong>Welcome Journey:</strong> Achieve 10% first-trade completion within 14 days of account opening</div>
+                    <div class="list-item"><strong>Three-Month Retention:</strong> Improve Australia's CFD retention from 53.5% to 60%</div>
+                    <div class="list-item"><strong>Active Trading:</strong> Increase average monthly active trading days by 8-10%</div>
+                </div>
+            </div>
+
+            <div id="crm-strategy" class="tab-content">
+                <div class="content-list">
+                    <h4>Strategic Framework</h4>
+                    <div class="list-item"><strong>Lifecycle-Driven Communication Architecture:</strong> Delivering messaging that is timely, relevant, and aligned to behavioural intent through activation sequences, development pathways, cross-product exposure, and reactivation workflows</div>
+                    <div class="list-item"><strong>Market-Specific Optimisation:</strong> Addressing regional preferences across Japan (IG Arena VIP experiences), Singapore (Interest on Assets onboarding), Australia (zero-commission campaigns), and UAE (multi-language optimisation)</div>
+                    <div class="list-item"><strong>Advanced Segmentation and Personalisation:</strong> Employing behavioural modelling that identifies engagement patterns, trading preferences, and cross-selling opportunities through dimensions like trading frequency, educational content engagement, and platform feature utilisation</div>
+                    <div class="list-item"><strong>Client Lifetime Value Control Group Framework:</strong> Establishing persistent control groups to scientifically measure the impact of CRM initiatives on client lifetime value</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Implementation Approach</h4>
+                    <div class="list-item"><strong>Enhanced Attribution Model:</strong> Combining multi-touch analysis with targeted last-touch measurement for precise ROI calculation</div>
+                    <div class="list-item"><strong>Data-Driven Personalisation Transformation:</strong> Shifting from execution-focused CRM to a personalised outcome framework</div>
+                    <div class="list-item"><strong>6-12 Month Testing Roadmap:</strong> A structured testing calendar that systematically optimises key CRM elements, beginning with activation optimisation (months 1-3), followed by cross-sell enhancement (months 4-6), retention strengthening (months 7-9), and advanced personalisation (months 10-12)</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Content Strategy</h4>
+                    <div class="list-item"><strong>IG Markets (Value Enhancement):</strong> Advanced strategy content, market intelligence, platform optimisation guides, and account performance insights</div>
+                    <div class="list-item"><strong>IG One (Progressive Development):</strong> Onboarding acceleration, knowledge foundation modules, product introduction pathways, confidence-building narratives, and market-specific product highlights</div>
+                    <div class="list-item"><strong>Cross-Platform Opportunities:</strong> Content that addresses platform complementarity, progressive trading introduction, and unified account benefits</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEO Section -->
+        <section id="seo" class="section">
+            <div class="department-header">
+                <div class="department-icon">🔍</div>
+                <div class="department-info">
+                    <h2>SEO (Organic Growth)</h2>
+                    <p>SEO strategy serves as the foundation for sustainable organic acquisition and brand authority. Focus will be on high-intent search opportunities that directly align with our dual-brand approach.</p>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('seo', 'objectives')">Objectives</div>
+                <div class="tab" onclick="showTab('seo', 'metrics')">Performance Metrics</div>
+                <div class="tab" onclick="showTab('seo', 'strategy')">Strategy</div>
+            </div>
+
+            <div id="seo-objectives" class="tab-content active">
+                <div class="content-list">
+                    <h4>Key Objectives</h4>
+                    <div class="list-item">Capture high-intent search traffic across key markets</div>
+                    <div class="list-item">Establish topical authority in trading and investment</div>
+                    <div class="list-item">Support new product awareness (crypto, stocks)</div>
+                    <div class="list-item">Drive qualified lead generation through organic search</div>
+                    <div class="list-item">Support increased unprompted brand awareness targets</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Strategic Goals</h4>
+                    <div class="list-item">Establish market leadership in the trading and investment space by becoming the dominant organic search presence for high-intent queries and the recognised authority on trading topics</div>
+                    <div class="list-item">Drive sustainable business growth by efficiently acquiring qualified leads through targeted organic search strategies that support both existing and new product offerings</div>
+                    <div class="list-item">Build a powerful brand presence in the financial services sector by increasing unprompted brand awareness and creating strong associations with key trading and investment topics</div>
+                </div>
+            </div>
+
+            <div id="seo-metrics" class="tab-content">
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-value">XX%</div>
+                        <div class="kpi-label">Traffic to App Conversion</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">XX%</div>
+                        <div class="kpi-label">First-Trade Completion</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">XX</div>
+                        <div class="kpi-label">Priority Subject Clusters</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">Top 10</div>
+                        <div class="kpi-label">Keyword Rankings</div>
+                    </div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Performance Metrics</h4>
+                    <div class="list-item"><strong>Traffic to App Conversion Rate</strong> on key converting pages</div>
+                    <div class="list-item"><strong>First-Trade Completion</strong> improvement</div>
+                    <div class="list-item"><strong>Topical Authority Establishment</strong> for priority subject clusters</div>
+                    <div class="list-item"><strong>Keyword Position Improvement</strong> for visibility index scores across all markets</div>
+                </div>
+            </div>
+
+            <div id="seo-strategy" class="tab-content">
+                <div class="content-list">
+                    <h4>Strategic Framework</h4>
+                    <div class="list-item"><strong>Strategic Keyword Architecture:</strong> A clear distribution that mirrors business priorities with 20% focus on IG Markets (high-value technical terms), 70% on IG One (broad-reach foundational terms), and 10% on innovation leadership terms (forward-looking terminology)</div>
+                    <div class="list-item"><strong>Content Depth Strategy:</strong> Prioritising comprehensive topic authority through pillar content development, topic cluster implementation, and progressive journey mapping rather than pursuing superficial coverage</div>
+                    <div class="list-item"><strong>Integration with Content Ecosystem:</strong> Functioning as both a driver and beneficiary of the broader content architecture, creating synergies that advance both immediate acquisition objectives and long-term brand development</div>
+                    <div class="list-item"><strong>Technical Excellence Foundation:</strong> Ensuring optimal infrastructure through mobile experience optimiSation, Core Web Vitals excellence, structured data implementation, and multi-region technical architecture. This will need to be driven by the TechSEO team.</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Content Strategy Distribution</h4>
+                    <div class="list-item"><strong>Educational Resource Content (40%):</strong> Comprehensive guides addressing knowledge-seeking intent</div>
+                    <div class="list-item"><strong>Product Comparison Content (25%):</strong> Objective evaluation resources for consideration-stage searchers</div>
+                    <div class="list-item"><strong>Market Analysis Content (20%):</strong> Timely insight resources demonstrating expertise</div>
+                    <div class="list-item"><strong>Platform Guidance Content (15%):</strong> Feature-specific resources with clear pathways to product features</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Market-Specific Implementation</h4>
+                    <div class="list-item"><strong>Japan:</strong> OTC Options education (25%), Share Knockouts guidance (20%), IG Arena content (15%)</div>
+                    <div class="list-item"><strong>Singapore:</strong> Investing education (30%), stock trading fundamentals (25%), Mutual Funds comparison (15%)</div>
+                    <div class="list-item"><strong>Australia:</strong> Competitive stock trading positioning (35%), crypto education (20%), leveraged product comparison (15%)</div>
+                    <div class="list-item"><strong>UAE:</strong> Zero-commission trading education (30%), multi-language platform guidance (25%), investments (20%)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ASO Section -->
+        <section id="aso" class="section">
+            <div class="department-header">
+                <div class="department-icon">📱</div>
+                <div class="department-info">
+                    <h2>ASO (Organic Growth)</h2>
+                    <p>Our organic App Store Optimisation strategy maximises app discovery, downloads, and engagement for both IG Markets and IG One across all regions, creating sustainable visibility that drives acquisition and reinforces dual-brand positioning without paid promotion.</p>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('aso', 'objectives')">Objectives</div>
+                <div class="tab" onclick="showTab('aso', 'metrics')">Performance Metrics</div>
+                <div class="tab" onclick="showTab('aso', 'strategy')">Strategy</div>
+            </div>
+
+            <div id="aso-objectives" class="tab-content active">
+                <div class="content-list">
+                    <h4>Key Objectives</h4>
+                    <div class="list-item">Maximise discoverability of both apps in respective stores</div>
+                    <div class="list-item">Drive high-quality downloads with clear user intent</div>
+                    <div class="list-item">Optimise for regional differences across target markets</div>
+                    <div class="list-item">Support dual-brand strategy with distinctive positioning</div>
+                    <div class="list-item">Facilitate seamless IG One launches across markets</div>
+                    <div class="list-item">Support migration strategy between platforms</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Strategic Goals</h4>
+                    <div class="list-item">Establish market-leading mobile presence by maximising organic app discovery and downloads across all target regions</div>
+                    <div class="list-item">Enable successful multi-brand strategy execution by creating distinctive positioning for each app while supporting seamless migration between platforms</div>
+                    <div class="list-item">Drive sustainable global expansion by optimising regional market approaches and facilitating efficient IG One launches across new territories</div>
+                </div>
+            </div>
+
+            <div id="aso-metrics" class="tab-content">
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-value">Top 10</div>
+                        <div class="kpi-label">Keyword Rankings</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">XX%</div>
+                        <div class="kpi-label">Impression-to-Download Rate</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">XX%</div>
+                        <div class="kpi-label">Conversion Rate Increase</div>
+                    </div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Performance Metrics</h4>
+                    <div class="list-item"><strong>Keyword Ranking Advancement:</strong> Achieve top 10 positions for primary target keywords across both platforms</div>
+                    <div class="list-item"><strong>Impression-to-Download Improvement:</strong> Increase app page conversion rate through optimised visual assets, metadata refinement, and social proof enhancement</div>
+                </div>
+            </div>
+
+            <div id="aso-strategy" class="tab-content">
+                <div class="content-list">
+                    <h4>Strategic Framework</h4>
+                    <div class="list-item"><strong>Strategic Keyword Architecture:</strong> Different keyword focuses for IG Markets (professional trading terminology), IG One (accessible investment terminology), and innovation leadership (forward-looking terminology)</div>
+                    <div class="list-item"><strong>Localised Metadata Optimisation:</strong> Comprehensive market-specific adaptations including title and subtitle localisation, description optimisation, and promotional text rotation</div>
+                    <div class="list-item"><strong>Visual Asset Differentiation:</strong> Distinct visual approaches for each platform, with IG Markets emphasising sophistication and IG One highlighting accessibility, plus market-specific visual adaptations</div>
+                    <div class="list-item"><strong>Release Optimisation Strategy:</strong> Carefully planned update schedule with strategic feature emphasis and synchronised ASO for new product introductions (TBC)</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Future Opportunities</h4>
+                    <div class="list-item"><strong>Voice Search Optimisation:</strong> Incorporating voice query research and question-based optimisation</div>
+                    <div class="list-item"><strong>Deep Linking Architecture:</strong> Implementing content-to-feature linking and cross-product discovery paths</div>
+                    <div class="list-item"><strong>Regional App Store Expansion:</strong> Developing presence on alternative app marketplaces beyond primary platforms</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Market-Specific Priorities</h4>
+                    <div class="list-item"><strong>Japan:</strong> Focus on OTC Options terms, "Interest on Assets" in Singapore, competitive stock trading in Australia, and zero-commission trading in UAE</div>
+                    <div class="list-item"><strong>Visibility Enhancement:</strong> Secure featured placements in category browse sections, achieve prominent placement in "similar app" recommendations</div>
+                    <div class="list-item"><strong>Conversion Optimisation:</strong> Achieve above-market conversion benchmarks in key expansion markets, increase authenticated review volume</div>
+                    <div class="list-item"><strong>Engagement Quality:</strong> Achieve target first-trade completion rates, maintain retention rate for ASO-acquired users</div>
+                    <div class="list-item"><strong>Brand Differentiation:</strong> Establish clear positioning distinction from competitors, ensure distinctive visual presentation, achieve correct value proposition recall</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Media Section -->
+        <section id="social" class="section">
+            <div class="department-header">
+                <div class="department-icon">💬</div>
+                <div class="department-info">
+                    <h2>Social Media (Organic)</h2>
+                    <p>Our organic social media strategy builds authentic, value-driven audience connections that support our dual-brand architecture while advancing market-specific objectives across the division, positioning IG as an essential resource throughout investors' journeys.</p>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('social', 'objectives')">Objectives</div>
+                <div class="tab" onclick="showTab('social', 'metrics')">Performance Metrics</div>
+                <div class="tab" onclick="showTab('social', 'strategy')">Strategy</div>
+            </div>
+
+            <div id="social-objectives" class="tab-content active">
+                <div class="content-list">
+                    <h4>Key Objectives</h4>
+                    <div class="list-item">Establish distinctive brand identities for both platforms</div>
+                    <div class="list-item">Drive organic acquisition through educational content</div>
+                    <div class="list-item">Build engaged communities around each platform</div>
+                    <div class="list-item">Position IG as an innovative leader in fintech</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Strategic Goals</h4>
+                    <div class="list-item">Build powerful, differentiated brand identities that resonate with target audiences and establish IG as a recognised innovative leader in the fintech space</div>
+                    <div class="list-item">Create self-sustaining growth engines by developing engaged communities and leveraging educational content to drive organic acquisition without paid amplification</div>
+                    <div class="list-item">Establish long-term customer relationships by fostering active social communities that provide ongoing value and engagement across both platforms in all markets</div>
+                </div>
+            </div>
+
+            <div id="social-metrics" class="tab-content">
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-value">1.5%</div>
+                        <div class="kpi-label">Engagement Rate Target</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">25%</div>
+                        <div class="kpi-label">Content Reach Increase</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">15%</div>
+                        <div class="kpi-label">CTR Improvement</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">5.6%</div>
+                        <div class="kpi-label">Community Growth</div>
+                    </div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Performance Metrics</h4>
+                    <div class="list-item"><strong>Engagement Rate Optimisation:</strong> Achieve 1.5% average organic engagement rate (up from 0.8%)</div>
+                    <div class="list-item"><strong>Content Performance Improvement:</strong> Increase average organic reach per post to 25%</div>
+                    <div class="list-item"><strong>Post Link Clicks:</strong> Increase CTR by 15% through optimised call-to-actions</div>
+                    <div class="list-item"><strong>Community Growth:</strong> Expand organic follower base by 5.6% across all platforms</div>
+                </div>
+            </div>
+
+            <div id="social-strategy" class="tab-content">
+                <div class="content-list">
+                    <h4>Platform-Specific Focus</h4>
+                    <div class="list-item"><strong>LinkedIn:</strong> Professional thought leadership hub for IG Markets clients</div>
+                    <div class="list-item"><strong>Instagram:</strong> Visual storytelling platform supporting IG One's educational mission</div>
+                    <div class="list-item"><strong>YouTube:</strong> Comprehensive educational library serving both platforms</div>
+                    <div class="list-item"><strong>X:</strong> Real-time market pulse and rapid response platform</div>
+                    <div class="list-item"><strong>TikTok:</strong> Entry point for developing investors with ultra-short educational content</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Content Strategy Mix</h4>
+                    <p style="margin-bottom: 15px;"><strong>IG Markets:</strong> Specialised material for experienced traders featuring advanced analysis and platform optimisation:</p>
+                    <div class="list-item">Educational Content (40%)</div>
+                    <div class="list-item">Market Intelligence (25%)</div>
+                    <div class="list-item">Community Engagement (20%)</div>
+                    <div class="list-item">Brand Development (15%)</div>
+                    <p style="margin: 20px 0 15px;"><strong>IG One:</strong> Accessible educational materials for developing investors:</p>
+                    <div class="list-item">Educational Content (40%)</div>
+                    <div class="list-item">Market Intelligence (25%)</div>
+                    <div class="list-item">Community Engagement (20%)</div>
+                    <div class="list-item">Brand Development (15%)</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Strategic Framework</h4>
+                    <div class="list-item"><strong>Value-First Content Approach:</strong> Creating content worth following, sharing, and returning to through educational excellence, insight-driven perspective, authentic brand voice, distinctive perspective, and authentic expertise</div>
+                    <div class="list-item"><strong>Brand Differentiation Framework:</strong> Ensuring appropriate targeting while maintaining clear brand architecture through IG Markets Social Presence (sophistication and analytical depth) and IG One Social Voice (accessibility and supportive guidance)</div>
+                    <div class="list-item"><strong>Cross-Platform Consistency:</strong> Maintaining visual cohesion and messaging alignment</div>
+                    <div class="list-item"><strong>Market-Specific Adaptation:</strong> Incorporating regional customisation</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="section">
+            <div class="department-header">
+                <div class="department-icon">🎓</div>
+                <div class="department-info">
+                    <h2>Education</h2>
+                    <p>Education strategy forms the foundation of our divisional content approach, creating progressive learning pathways that build investor confidence and drive platform adoption while establishing IG as the definitive authority for investors at all experience levels.</p>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('education', 'objectives')">Objectives</div>
+                <div class="tab" onclick="showTab('education', 'metrics')">Performance Metrics</div>
+                <div class="tab" onclick="showTab('education', 'strategy')">Strategy</div>
+            </div>
+
+            <div id="education-objectives" class="tab-content active">
+                <div class="content-list">
+                    <h4>Key Objectives</h4>
+                    <div class="list-item">Develop comprehensive learning pathways for all user segments</div>
+                    <div class="list-item">Support product adoption through practical education</div>
+                    <div class="list-item">Establish IG as the authority in trading education</div>
+                    <div class="list-item">Drive organic traffic and lead generation</div>
+                    <div class="list-item">Support doubling of active client base by FY27</div>
+                    <div class="list-item">Improve 3-month retention through knowledge development</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Strategic Goals</h4>
+                    <div class="list-item">Establish market leadership in the trading education space by becoming the recognised authority and driving significant organic growth through educational excellence</div>
+                    <div class="list-item">Achieve sustainable business growth by doubling the active client base by FY27 through effective educational pathways and improved customer retention</div>
+                    <div class="list-item">Maximise customer lifetime value by enhancing product adoption and improving 3-month retention rates through strategic knowledge development initiatives</div>
+                </div>
+            </div>
+
+            <div id="education-metrics" class="tab-content">
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-value">3%</div>
+                        <div class="kpi-label">First Trade Acceleration</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">8%</div>
+                        <div class="kpi-label">User Retention Improvement</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">10%</div>
+                        <div class="kpi-label">Cross-Product Exploration</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">20-25%</div>
+                        <div class="kpi-label">Completion Rate Target</div>
+                    </div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Performance Metrics</h4>
+                    <div class="list-item"><strong>First Trade Acceleration:</strong> Convert 3% of educational content consumers to first trade completion within 30 days</div>
+                    <div class="list-item"><strong>User Retention:</strong> 8% improvement in 3-month retention rates for clients who complete platform-critical educational content</div>
+                    <div class="list-item"><strong>Cross-Product Exploration:</strong> Drive 10% increase in multi-product adoption rates through educational content</div>
+                    <div class="list-item"><strong>Completion Rate Optimisation:</strong> Achieve 20% completion rate for educational series and 25% for platform-critical knowledge areas</div>
+                </div>
+            </div>
+
+            <div id="education-strategy" class="tab-content">
+                <div class="content-list">
+                    <h4>Dual-Platform Educational Architecture</h4>
+                    <div class="list-item"><strong>IG Markets Education (20% focus):</strong> Advanced resources for experienced traders</div>
+                    <div class="list-item"><strong>IG One Education (70% focus):</strong> Accessible foundation-building content for financial novices</div>
+                    <div class="list-item"><strong>Cross-Platform Innovation (10% focus):</strong> Forward-looking content introducing emerging concepts</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Content Strategy Mix</h4>
+                    <div class="list-item"><strong>Platform Capabilities (30%):</strong> Feature-specific education demonstrating practical application</div>
+                    <div class="list-item"><strong>Market Understanding (25%):</strong> Foundational and advanced market knowledge</div>
+                    <div class="list-item"><strong>Strategy Development (20%):</strong> Trading and investment approach education</div>
+                    <div class="list-item"><strong>Risk Management (15%):</strong> Practical risk control techniques</div>
+                    <div class="list-item"><strong>Psychological Development (10%):</strong> Trading psychology content</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Strategic Framework</h4>
+                    <p style="margin-bottom: 15px;"><strong>Multi-Format Learning Ecosystem:</strong> Ensuring format diversity to align with different learning preferences:</p>
+                    <div class="list-item">Video Tutorials: Comprehensive visual instruction</div>
+                    <div class="list-item">Interactive Tools: Calculators, simulators, and assessment instruments</div>
+                    <div class="list-item">Written Resources: Structured guides, analysis frameworks, and reference materials</div>
+                    <p style="margin: 20px 0 15px;"><strong>Integration with Customer Journey:</strong> Functioning as a strategic driver across the entire lifecycle:</p>
+                    <div class="list-item">Acquisition Acceleration: Educational value propositions attracting prospects</div>
+                    <div class="list-item">Activation Enhancement: Structured onboarding education building confidence</div>
+                    <div class="list-item">Engagement Deepening: Progressive learning sequences encouraging platform exploration</div>
+                    <div class="list-item">Retention Strengthening: Advanced education providing ongoing value</div>
+                </div>
+
+                <div class="content-list" style="margin-top: 20px;">
+                    <h4>Market-Specific Education Priorities</h4>
+                    <div class="list-item"><strong>Japan:</strong> OTC Options education with Arena integration, Singapore's "Interest on Assets" education, Australia's competitive stock trading, and UAE's multilingual zero-commission trading content</div>
+                    <div class="list-item"><strong>Format Evolution:</strong> Shifts toward bite-sized microlearning, interactive tools, visual explanation systems, and platform-optimised video content to enhance engagement and comprehension</div>
+                    <div class="list-item"><strong>Skill Development Pathways:</strong> Feature progressive learning journeys, achievement recognition, practical application focus, and personalised recommendations based on user behaviour</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>IG Group Internal Use Only - FY26 CCE Strategy Dashboard</p>
+    </footer>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navigation functionality
+            window.showSection = function(sectionId) {
+                // Hide all sections
+                const sections = document.querySelectorAll('.section');
+                sections.forEach(section => section.classList.remove('active'));
+                
+                // Show selected section
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+                
+                // Update nav active state
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => item.classList.remove('active'));
+                if (event && event.target) {
+                    event.target.classList.add('active');
+                }
+                
+                // Scroll to top when changing sections
+                window.scrollTo(0, 0);
+            }
+
+            // Tab functionality
+            window.showTab = function(section, tabName) {
+                // Hide all tab contents in the section
+                const tabContents = document.querySelectorAll(`#${section} .tab-content`);
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Show selected tab content
+                const targetTab = document.getElementById(`${section}-${tabName}`);
+                if (targetTab) {
+                    targetTab.classList.add('active');
+                }
+                
+                // Update tab active state
+                const tabs = document.querySelectorAll(`#${section} .tab`);
+                tabs.forEach(tab => tab.classList.remove('active'));
+                if (event && event.target) {
+                    event.target.classList.add('active');
+                }
+            }
+
+            // Animate progress bars when visible
+            const observerOptions = {
+                threshold: 0.5,
+                rootMargin: '0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const progressFills = entry.target.querySelectorAll('.progress-fill');
+                        progressFills.forEach(fill => {
+                            const width = fill.style.width;
+                            fill.style.width = '0';
+                            setTimeout(() => {
+                                fill.style.width = width;
+                            }, 100);
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all progress containers
+            document.querySelectorAll('.progress-container').forEach(container => {
+                observer.observe(container);
+            });
+
+            // Add hover effects to cards
+            document.querySelectorAll('.strategy-card, .kpi-card, .content-list').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                });
+            });
+
+            // Smooth scroll behavior for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Initialize the dashboard
+            // Set initial section
+            showSection('overview');
+            
+            // Make sure all tabs show their first content by default
+            const sections = ['crm', 'seo', 'aso', 'social', 'education'];
+            sections.forEach(section => {
+                const firstTab = document.querySelector(`#${section} .tab`);
+                if (firstTab) {
+                    firstTab.classList.add('active');
+                }
+                const firstContent = document.querySelector(`#${section} .tab-content`);
+                if (firstContent) {
+                    firstContent.classList.add('active');
+                }
+            });
+
+            // Set the first nav item as active
+            const firstNavItem = document.querySelector('.nav-item');
+            if (firstNavItem) {
+                firstNavItem.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
